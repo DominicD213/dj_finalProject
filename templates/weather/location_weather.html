@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Weather for {{ location.name }}</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Temperature</th>
+            <th>Humidity</th>
+            <th>Wind Speed</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for weather in weather_data %}
+        <tr>
+            <td>{{ weather.forecast_date }}</td>
+            <td>{{ weather.temperature }}°C</td>
+            <td>{{ weather.humidity }}%</td>
+            <td>{{ weather.wind_speed }} km/h</td>
+            <td>{{ weather.weather_description }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No weather data available for this location.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Weather Dashboard</h1>
+
+    <!-- Search Form -->
+    <form method="get" action="{% url 'weather_dashboard' %}">
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Search Locations" />
+        <button type="submit">Search</button>
+    </form>
+    
+    {% if locations %}
+        <ul>
+            {% for location in locations %}
+                <li>
+                    <strong>{{ location.name }}</strong><br>
+                    <!-- Display weather data for the location, if available -->
+                    {% with weather_data=location.weatherdata_set.all %}
+                        {% if weather_data %}
+                            <table>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Temperature</th>
+                                    <th>Humidity</th>
+                                    <th>Wind Speed</th>
+                                    <th>Description</th>
+                                </tr>
+                                {% for data in weather_data %}
+                                    <tr>
+                                        <td>{{ data.date }}</td>
+                                        <td>{{ data.temperature }}°C</td>
+                                        <td>{{ data.humidity }}%</td>
+                                        <td>{{ data.wind_speed }} km/h</td>
+                                        <td>{{ data.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% else %}
+                            <p>No weather data available for this location.</p>
+                        {% endif %}
+                    {% endwith %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No locations found.</p>
+    {% endif %}
+{% endblock %}
+
